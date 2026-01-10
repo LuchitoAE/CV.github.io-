@@ -26,6 +26,7 @@ Portafolio web profesional y currículum interactivo desarrollado con HTML5, CSS
 
 cv-web/
 ├── index.html # Página principal
+
 ├── styles/
 │ ├── main.css # Estilos principales
 │ ├── theme.css # Variables claro/oscuro
