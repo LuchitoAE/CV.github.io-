@@ -25,12 +25,11 @@ Portafolio web profesional y currículum interactivo desarrollado con HTML5, CSS
 ## 📁 Estructura del Proyecto
 
 cv-web/
-├── index.html # Página principal
-
-├── styles/
-│ ├── main.css # Estilos principales
-│ ├── theme.css # Variables claro/oscuro
-│ ├── responsive.css # Media queries
+├── index.html # Página principal  
+├── styles/  
+│ ├── main.css # Estilos principales  
+│ ├── theme.css # Variables claro/oscuro  
+│ ├── responsive.css # Media queries  
 │ └── print.css # Estilos para PDF
 ├── js/
 │ ├── config.js # Configuración global
