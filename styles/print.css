@@ -1,0 +1,236 @@
+/* ===== ESTILOS ESPECÍFICOS PARA IMPRESIÓN ===== */
+
+/* Solo aplicar estos estilos cuando se imprime */
+@media print {
+    /* Reset de estilos que interfieren con la impresión */
+    * {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    
+    /* Ocultar elementos no necesarios en la versión impresa */
+    .header,
+    .menu-toggle,
+    .theme-toggle,
+    .language-selector,
+    .hero-actions,
+    .avatar-status,
+    .footer-social,
+    .back-to-top,
+    .no-print {
+        display: none !important;
+    }
+    
+    /* Ajustar el body para impresión */
+    body {
+        font-size: 12pt !important;
+        line-height: 1.5 !important;
+        font-family: "Times New Roman", Times, serif;
+        color: #000 !important;
+        background: #fff !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Contenedor principal sin límites */
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Asegurar que el contenido sea negro sobre blanco */
+    .main-content {
+        color: #000 !important;
+        background: #fff !important;
+    }
+    
+    /* Mejorar legibilidad de texto */
+    h1, h2, h3, h4, h5, h6 {
+        color: #000 !important;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .section-title {
+        border-bottom: 2px solid #000 !important;
+        padding-bottom: 0.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Ajustar secciones para impresión */
+    section {
+        padding: 1rem 0 !important;
+        page-break-inside: avoid;
+        margin: 1rem 0 !important;
+    }
+    
+    /* Tarjetas sin fondo ni bordes */
+    .about-card,
+    .timeline-content,
+    .skill-category,
+    .project-card,
+    .contact-form {
+        background: transparent !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        margin-bottom: 1rem !important;
+        padding: 1rem !important;
+        page-break-inside: avoid;
+    }
+    
+    /* Listas mejoradas */
+    ul, ol {
+        page-break-inside: avoid;
+    }
+    
+    /* Enlaces visibles en impresión */
+    a {
+        color: #000 !important;
+        text-decoration: underline !important;
+    }
+    
+    /* Mostrar URLs después de enlaces externos */
+    a[href^="http"]:after {
+        content: " (" attr(href) ")";
+        font-size: 0.9em;
+        font-weight: normal;
+        color: #666 !important;
+    }
+    
+    /* Evitar que los enlaces se rompan */
+    a {
+        page-break-inside: avoid;
+    }
+    
+    /* Imágenes ajustadas */
+    img {
+        max-width: 100% !important;
+        page-break-inside: avoid;
+    }
+    
+    .avatar {
+        border: 2px solid #000 !important;
+        max-width: 150px !important;
+        height: auto !important;
+    }
+    
+    /* Barra de habilidades simplificada */
+    .skill-bar {
+        background: #ddd !important;
+        height: 4px !important;
+    }
+    
+    .skill-level {
+        background: #000 !important !important;
+    }
+    
+    /* Timeline ajustado */
+    .timeline::before {
+        background: #000 !important;
+        opacity: 0.3 !important;
+    }
+    
+    .timeline-date {
+        background: #000 !important;
+        color: #fff !important;
+    }
+    
+    /* Ajustar el grid para una columna */
+    .about-grid,
+    .skills-grid,
+    .projects-grid,
+    .contact-grid {
+        display: block !important;
+    }
+    
+    .about-grid > *,
+    .skills-grid > *,
+    .projects-grid > *,
+    .contact-grid > * {
+        width: 100% !important;
+        margin-bottom: 1rem !important;
+        float: none !important;
+    }
+    
+    /* Footer simplificado */
+    .footer {
+        background: transparent !important;
+        border-top: 2px solid #000 !important;
+        margin-top: 2rem !important;
+        padding: 1rem 0 !important;
+        page-break-before: always;
+    }
+    
+    .footer-content {
+        display: block !important;
+        text-align: center !important;
+    }
+    
+    .footer-brand,
+    .footer-links,
+    .footer-bottom {
+        margin-bottom: 1rem !important;
+    }
+    
+    .footer-links a {
+        display: inline-block;
+        margin: 0 0.5rem !important;
+    }
+    
+    /* Información de contacto clara */
+    .contact-details a:after {
+        content: "" !important;
+    }
+    
+    /* Asegurar márgenes de página */
+    @page {
+        margin: 2cm;
+    }
+    
+    @page :first {
+        margin-top: 3cm;
+    }
+    
+    /* Evitar viudas y huérfanos */
+    p, li {
+        orphans: 3;
+        widows: 3;
+    }
+    
+    /* Control de saltos de página */
+    h1, h2, h3, h4 {
+        page-break-after: avoid;
+    }
+    
+    img {
+        page-break-inside: avoid;
+    }
+    
+    /* Encabezados y pies de página de impresión */
+    @page {
+        @top-center {
+            content: "CV Profesional - AQUINO Luis";
+            font-size: 10pt;
+            color: #666;
+        }
+        @bottom-right {
+            content: "Página " counter(page) " de " counter(pages);
+            font-size: 10pt;
+            color: #666;
+        }
+    }
+    
+    /* Contador de páginas */
+    body {
+        counter-reset: page;
+    }
+    
+    .main-content {
+        counter-increment: page;
+    }
+}
