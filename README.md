@@ -30,15 +30,15 @@ cv-web/
 │ ├── main.css # Estilos principales  
 │ ├── theme.css # Variables claro/oscuro  
 │ ├── responsive.css # Media queries  
-│ └── print.css # Estilos para PDF
-├── js/
-│ ├── config.js # Configuración global
-│ ├── i18n.js # Internacionalización
-│ ├── theme.js # Gestión de tema
-│ └── main.js # Lógica principal
-├── assets/
-│ ├── translations/
-│ │ ├── es.json # Textos en español
-│ │ └── en.json # Textos en inglés
-│ └── images/ # Imágenes y recursos
-└── README.md # Documentación
+│ └── print.css # Estilos para PDF  
+├── js/  
+│ ├── config.js # Configuración global  
+│ ├── i18n.js # Internacionalización  
+│ ├── theme.js # Gestión de tema  
+│ └── main.js # Lógica principal  
+├── assets/  
+│ ├── translations/  
+│ │ ├── es.json # Textos en español  
+│ │ └── en.json # Textos en inglés  
+│ └── images/ # Imágenes y recursos  
+└── README.md # Documentación  
