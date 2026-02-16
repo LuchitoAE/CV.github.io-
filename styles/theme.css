@@ -129,3 +129,61 @@
 [data-theme="dark"] .header {
     background-color: rgba(var(--bg-color-rgb), 0.95);
 }
+
+/* Tech tags: fondo más claro que la tarjeta en dark */
+[data-theme="dark"] .tech-tag {
+    background-color: var(--hover-bg);
+    border-color: var(--border-light);
+    color: var(--secondary-color);
+}
+
+/* Footer social: botones visibles en dark */
+[data-theme="dark"] .footer-social a {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+/* Inputs del formulario con fondo visible en dark */
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group textarea {
+    background-color: var(--bg-color);
+    border-color: var(--border-light);
+}
+
+/* Skill bar fondo más visible en dark */
+[data-theme="dark"] .skill-bar {
+    background-color: var(--hover-bg);
+}
+
+/* Info list border más visible en dark */
+[data-theme="dark"] .info-list li {
+    border-bottom-color: var(--border-color);
+}
+
+/* Avatar border glow sutil en dark */
+[data-theme="dark"] .avatar {
+    border-color: var(--secondary-color);
+}
+
+/* Status badge en dark */
+[data-theme="dark"] .avatar-status {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+/* Secciones alternas para dar profundidad en dark */
+[data-theme="dark"] .about-section,
+[data-theme="dark"] .skills-section,
+[data-theme="dark"] .contact-section {
+    background-color: var(--bg-secondary);
+}
+
+/* Lang btn activo más brillante en dark */
+[data-theme="dark"] .lang-btn:not(.active) {
+    color: var(--text-secondary);
+}
+
+/* Footer bottom border en dark */
+[data-theme="dark"] .footer-bottom {
+    border-top-color: var(--border-color);
+}
