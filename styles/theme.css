@@ -10,25 +10,25 @@
     --text-secondary: #6b7280;
     --text-light: #9ca3af;
     
-    /* Colores de fondo */
-    --bg-color: #ffffff;
-    --bg-secondary: #f9fafb;
-    --card-bg: #ffffff;
-    --hover-bg: #f3f4f6;
-    --footer-bg: #f9fafb;
-    
+    /* Colores de fondo - tono crema cálido */
+    --bg-color: #faf8f5;
+    --bg-secondary: #f3f0eb;
+    --card-bg: #fffdf9;
+    --hover-bg: #ede9e3;
+    --footer-bg: #f0ece6;
+
     /* Bordes */
-    --border-color: #e5e7eb;
-    --border-light: #f3f4f6;
-    
+    --border-color: #e2ddd6;
+    --border-light: #ede9e3;
+
     /* Sombras */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-    
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08);
+
     /* RGB para efectos de transparencia */
-    --bg-color-rgb: 255, 255, 255;
+    --bg-color-rgb: 250, 248, 245;
     --primary-color-rgb: 37, 99, 235;
 }
 
