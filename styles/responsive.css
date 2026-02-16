@@ -148,20 +148,12 @@
     .projects-grid {
         grid-template-columns: repeat(3, 1fr);
     }
-    
-    .project-card:nth-child(4) {
-        grid-column: 2;
-    }
 }
 
 /* Pantallas grandes (1280px en adelante) */
 @media (min-width: 1280px) {
     .projects-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    .project-card:nth-child(4) {
-        grid-column: auto;
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
