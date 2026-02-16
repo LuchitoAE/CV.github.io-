@@ -630,6 +630,33 @@ section {
     font-size: var(--fs-lg);
 }
 
+/* Proyecto destacado / en desarrollo */
+.project-card--featured {
+    border: 2px solid var(--primary-color);
+    position: relative;
+}
+
+.project-card--featured::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+}
+
+.badge--wip {
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
 /* ===== SECCIÓN CONTACTO ===== */
 .contact-grid {
     display: grid;
