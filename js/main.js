@@ -329,21 +329,9 @@ class CVApplication {
     }
 
     generatePDF() {
-        // Usar la funcionalidad de impresión del navegador
-        // Se aplicarán los estilos de print.css automáticamente
-        
-        // Mostrar mensaje de preparación
         const currentLang = i18n.getCurrentLanguage();
-        const message = currentLang === 'es' 
-            ? 'Preparando PDF...' 
-            : 'Preparing PDF...';
-        
-        alert(message);
-        
-        // Pequeño delay para asegurar que todo esté listo
-        setTimeout(() => {
-            window.print();
-        }, CONFIG.PDF.printDelay);
+        const cvFile = currentLang === 'en' ? 'cv-en.html' : 'cv-es.html';
+        window.open(cvFile, '_blank');
     }
 
     updateDownloadButtonText() {

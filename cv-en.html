@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luis Aquino — Resume</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary:  #1e3a8a;
+      --primary2: #1d4ed8;
+      --text:     #111827;
+      --text2:    #4b5563;
+      --text3:    #9ca3af;
+      --border:   #e5e7eb;
+      --bg-tag:   #eff6ff;
+      --border-tag: #bfdbfe;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      background: #fff;
+      font-size: 8.5pt;
+      line-height: 1.55;
+    }
+
+    @media screen {
+      html { background: #e5e7eb; }
+      body {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 24px auto;
+        padding: 13mm 15mm;
+        box-shadow: 0 4px 24px rgba(0,0,0,.18);
+      }
+    }
+
+    @page { size: A4; margin: 13mm 15mm; }
+    @media print {
+      html, body { background: #fff; box-shadow: none; margin: 0; padding: 0; width: auto; }
+      .print-btn { display: none !important; }
+    }
+
+    .cv-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2.5px solid var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .cv-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2.5px solid var(--primary);
+      flex-shrink: 0;
+    }
+
+    .cv-header-text { flex: 1; }
+
+    .cv-name {
+      font-size: 17pt;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -.3px;
+      line-height: 1.1;
+    }
+
+    .cv-title {
+      font-size: 8.5pt;
+      font-weight: 500;
+      color: var(--text2);
+      margin-top: 3px;
+    }
+
+    .cv-contacts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 14px;
+      margin-top: 7px;
+    }
+
+    .cv-contact {
+      font-size: 7.5pt;
+      color: var(--text2);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .cv-contact:hover { color: var(--primary2); }
+    .ci { font-style: normal; font-size: 8pt; }
+
+    .cv-body {
+      display: grid;
+      grid-template-columns: 33% 1fr;
+      gap: 0 16px;
+    }
+
+    .cv-sidebar {
+      border-right: 1px solid var(--border);
+      padding-right: 14px;
+    }
+
+    .cv-main { padding-left: 2px; }
+
+    .cv-sec { margin-bottom: 11px; }
+
+    .cv-sec-title {
+      font-size: 7.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 3px;
+      margin-bottom: 7px;
+    }
+
+    .cv-profile {
+      font-size: 8pt;
+      color: var(--text2);
+      line-height: 1.65;
+    }
+
+    .edu-degree { font-size: 8.5pt; font-weight: 600; }
+    .edu-uni    { font-size: 7.5pt; color: var(--text2); margin-top: 2px; }
+    .edu-detail { font-size: 7pt; color: var(--text3); margin-top: 2px; line-height: 1.6; }
+
+    .skill-group { margin-bottom: 6px; }
+    .skill-group:last-child { margin-bottom: 0; }
+
+    .skill-group-lbl {
+      font-size: 6.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text3);
+      margin-bottom: 3px;
+    }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 3px; }
+
+    .skill-tag {
+      font-size: 6.5pt;
+      background: var(--bg-tag);
+      color: var(--primary);
+      border: 1px solid var(--border-tag);
+      border-radius: 3px;
+      padding: 1px 5px;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    .lang-row { font-size: 7.5pt; color: var(--text2); line-height: 1.8; }
+
+    .project { margin-bottom: 11px; }
+    .project:last-child { margin-bottom: 0; }
+
+    .project-head {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 2px;
+    }
+
+    .project-name { font-size: 9pt; font-weight: 700; color: var(--text); }
+
+    .project-badge {
+      font-size: 6.5pt;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 3px;
+      padding: 1px 6px;
+      font-weight: 600;
+    }
+
+    .project-tech {
+      font-size: 7pt;
+      color: var(--primary2);
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .project-desc {
+      font-size: 7.5pt;
+      color: var(--text2);
+      line-height: 1.55;
+    }
+
+    .project-link {
+      font-size: 7pt;
+      color: var(--primary2);
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 3px;
+    }
+
+    .cv-footer-note {
+      font-size: 7pt;
+      color: var(--text3);
+      border-top: 1px solid var(--border);
+      padding-top: 6px;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    @media screen {
+      .print-btn {
+        position: fixed;
+        bottom: 24px; right: 24px;
+        display: flex; align-items: center; gap: 7px;
+        background: var(--primary); color: #fff;
+        border: none; border-radius: 8px;
+        padding: 10px 18px;
+        font-family: 'Inter', sans-serif;
+        font-size: 13px; font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(30,58,138,.45);
+        transition: background .15s;
+      }
+      .print-btn:hover { background: var(--primary2); }
+    }
+    @media print { .print-btn { display: none !important; } }
+  </style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">
+  ⬇ Save as PDF
+</button>
+
+<!-- ══ HEADER ══ -->
+<header class="cv-header">
+  <img src="assets/images/avatar.jpg" alt="Luis Aquino" class="cv-avatar" />
+  <div class="cv-header-text">
+    <div class="cv-name">AQUINO ESPINOZA, Luis Walter</div>
+    <div class="cv-title">Aspiring AI Agent Engineer &nbsp;·&nbsp; Multi-Agent Systems</div>
+    <div class="cv-contacts">
+      <a class="cv-contact" href="mailto:luis2232002@gmail.com">
+        <i class="ci">✉</i> luis2232002@gmail.com
+      </a>
+      <a class="cv-contact" href="tel:+51993096173">
+        <i class="ci">📞</i> +51 993 096 173
+      </a>
+      <a class="cv-contact" href="https://github.com/LuchitoAE" target="_blank">
+        <i class="ci">⌨</i> github.com/LuchitoAE
+      </a>
+      <a class="cv-contact" href="https://linkedin.com/in/luis-aquino-espinoza-034b55167" target="_blank">
+        <i class="ci">🔗</i> in/luis-aquino-espinoza
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ══ BODY ══ -->
+<div class="cv-body">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="cv-sidebar">
+
+    <!-- Education -->
+    <div class="cv-sec">
+      <div class="cv-sec-title">Education</div>
+      <div class="edu-degree">Systems &amp; Computing Engineering</div>
+      <div class="edu-uni">Universidad Peruana Los Andes</div>
+      <div class="edu-detail">8th semester &nbsp;·&nbsp; Expected graduation: Aug 2027<br>Focus on AI and autonomous agents</div>
+    </div>
+
+    <!-- Skills -->
+    <div class="cv-sec">
+      <div class="cv-sec-title">Skills</div>
+
+      <div class="skill-group">
+        <div class="skill-group-lbl">AI &amp; Agents</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Prompt Engineering</span>
+          <span class="skill-tag">Python AI</span>
+          <span class="skill-tag">LangChain</span>
+          <span class="skill-tag">CrewAI</span>
+          <span class="skill-tag">Ollama</span>
+          <span class="skill-tag">RAG</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-lbl">Languages</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Java</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">Kotlin</span>
+          <span class="skill-tag">SQL</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-lbl">Web &amp; Tools</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Supabase</span>
+          <span class="skill-tag">Git / GitHub</span>
+          <span class="skill-tag">Docker</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Languages -->
+    <div class="cv-sec">
+      <div class="cv-sec-title">Languages</div>
+      <div class="lang-row">
+        Spanish &nbsp;—&nbsp; Native<br>
+        English &nbsp;—&nbsp; Basic (technical reading)
+      </div>
+    </div>
+
+    <!-- Location -->
+    <div class="cv-sec">
+      <div class="cv-sec-title">Location</div>
+      <div class="edu-detail" style="font-size:7.5pt; color:#4b5563;">
+        Huancayo, Junín — Peru<br>
+        Open to internships &amp; remote positions
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="cv-main">
+
+    <!-- Profile -->
+    <div class="cv-sec">
+      <div class="cv-sec-title">Profile</div>
+      <p class="cv-profile">
+        Systems Engineering student focused on AI agent engineering and multi-agent systems.
+        I have built custom software for real clients, from requirements gathering through delivery.
+        Actively training in Python, LLMs, and orchestration frameworks including LangChain and CrewAI.
+      </p>
+    </div>
+
+    <!-- Projects -->
+    <div class="cv-sec">
+      <div class="cv-sec-title">Projects</div>
+
+      <div class="project">
+        <div class="project-head">
+          <span class="project-name">Costume Rental Tracking System</span>
+          <span class="project-badge">Full Stack</span>
+        </div>
+        <div class="project-tech">Node.js &nbsp;·&nbsp; Webpack &nbsp;·&nbsp; JavaScript &nbsp;·&nbsp; Supabase &nbsp;·&nbsp; PostgreSQL &nbsp;·&nbsp; Vercel</div>
+        <p class="project-desc">
+          Custom web system for a costume rental business. Features admin and employee panels,
+          inventory control, payment tracking (multiple methods) and return management.
+          Built from scratch following a full requirements-gathering process with the client.
+        </p>
+        <a class="project-link" href="https://github.com/LuchitoAE/proyecto-alquiler-disfraces" target="_blank">
+          ⌨ github.com/LuchitoAE/proyecto-alquiler-disfraces
+        </a>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <span class="project-name">Inventory &amp; Reports — Wholesale Fruit Business</span>
+          <span class="project-badge">Android</span>
+        </div>
+        <div class="project-tech">Kotlin &nbsp;·&nbsp; Android Studio &nbsp;·&nbsp; SQLite</div>
+        <p class="project-desc">
+          Android mobile app for a wholesale fruit buy-and-sell business. Handles inventory management,
+          supplier purchase registration, customer sales tracking, and daily/weekly report generation.
+          Developed end-to-end from client survey through final delivery.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="cv-footer-note">
+      Full portfolio with interactive demos: <strong>LuchitoAE.github.io</strong>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>
