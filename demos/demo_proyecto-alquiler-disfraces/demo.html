@@ -141,8 +141,20 @@
     .screenshot-frame img { width: 100%; display: block; }
 
     /* ── VESTUARIO GRID (3 screenshots) ── */
-    .vest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
-    .vest-grid .screenshot-frame { border-radius: 10px; }
+    .vest-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .vest-item { display: flex; flex-direction: column; gap: 8px; }
+    .vest-label {
+      font-size: 11px; font-weight: 600; text-align: center;
+      color: var(--muted); letter-spacing: .06em; text-transform: uppercase;
+    }
+    .vest-grid .screenshot-frame { border-radius: 10px; flex: 1; }
+    @media (max-width: 700px) {
+      .vest-grid { grid-template-columns: 1fr; }
+    }
 
     /* ── FEATURES ── */
     .features-grid {
@@ -217,7 +229,7 @@
 <div class="hero">
   <div class="hero-badge">
     <span class="material-icons" style="font-size:14px">checkroom</span>
-    Proyecto Full Stack — React + Supabase
+    Proyecto Full Stack — Node.js + Supabase
   </div>
   <h1>Gestión completa de<br/><span>alquiler de vestuario</span></h1>
   <p>Sistema web para administrar reservas, inventario, pagos y devoluciones de un negocio de alquiler de disfraces.</p>
@@ -303,14 +315,23 @@
 
     <div id="tab-vestuario" class="tab-pane">
       <div class="vest-grid">
-        <div class="screenshot-frame">
-          <img src="../demo_proyecto-alquiler-disfraces/screenshots/gestionvestuario_1.png" alt="Modelos de vestuario" loading="lazy" />
+        <div class="vest-item">
+          <div class="vest-label">Modelos de vestuario</div>
+          <div class="screenshot-frame">
+            <img src="../demo_proyecto-alquiler-disfraces/screenshots/gestionvestuario_1.png" alt="Modelos de vestuario" loading="lazy" />
+          </div>
         </div>
-        <div class="screenshot-frame">
-          <img src="../demo_proyecto-alquiler-disfraces/screenshots/gestionvestuario_2.png" alt="Items individuales" loading="lazy" />
+        <div class="vest-item">
+          <div class="vest-label">Items individuales</div>
+          <div class="screenshot-frame">
+            <img src="../demo_proyecto-alquiler-disfraces/screenshots/gestionvestuario_2.png" alt="Items individuales" loading="lazy" />
+          </div>
         </div>
-        <div class="screenshot-frame">
-          <img src="../demo_proyecto-alquiler-disfraces/screenshots/gestionvestuario_3.png" alt="Categorías" loading="lazy" />
+        <div class="vest-item">
+          <div class="vest-label">Categorías</div>
+          <div class="screenshot-frame">
+            <img src="../demo_proyecto-alquiler-disfraces/screenshots/gestionvestuario_3.png" alt="Categorías" loading="lazy" />
+          </div>
         </div>
       </div>
     </div>
@@ -361,13 +382,12 @@
   <p class="section-label">Stack técnico</p>
   <h2 class="section-title">Tecnologías utilizadas</h2>
   <div class="tech-row">
-    <span class="tech-chip">React 18</span>
-    <span class="tech-chip">React Router v6</span>
+    <span class="tech-chip">Node.js</span>
+    <span class="tech-chip">Webpack</span>
+    <span class="tech-chip">JavaScript</span>
     <span class="tech-chip">Supabase</span>
     <span class="tech-chip">PostgreSQL</span>
     <span class="tech-chip">Row Level Security</span>
-    <span class="tech-chip">Context API</span>
-    <span class="tech-chip">CSS Modules</span>
     <span class="tech-chip">Vercel</span>
   </div>
 </section>
