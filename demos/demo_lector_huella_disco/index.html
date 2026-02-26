@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AccessID — Sistema Biométrico de Control de Acceso</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --bg2: #eef0f7;
+    --white: #ffffff;
+    --border: #e2e6f0;
+    --border2: #d0d5e8;
+    --primary: #1e3a8a;
+    --primary-h: #2d52b8;
+    --primary-pale: #eff4ff;
+    --accent: #0ea5e9;
+    --accent-pale: #f0f9ff;
+    --green: #059669;
+    --green-pale: #ecfdf5;
+    --red: #dc2626;
+    --red-pale: #fef2f2;
+    --amber: #d97706;
+    --amber-pale: #fffbeb;
+    --purple: #7c3aed;
+    --purple-pale: #f5f3ff;
+    --text: #111827;
+    --text2: #4b5563;
+    --text3: #9ca3af;
+    --sh: 0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+    --sh-md: 0 4px 12px rgba(0,0,0,0.08),0 2px 4px rgba(0,0,0,0.04);
+    --sh-lg: 0 10px 30px rgba(0,0,0,0.10),0 4px 8px rgba(0,0,0,0.05);
+    --r: 10px; --r-sm: 6px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;box-shadow:var(--sh)}
+  .nav-brand{display:flex;align-items:center;gap:.6rem}
+  .nav-brand-icon{width:32px;height:32px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem}
+  .nav-brand-name{font-family:'Inter',sans-serif;font-weight:700;font-size:1rem;color:var(--primary)}
+  .nav-brand-name span{font-weight:400;color:var(--text3)}
+  .nav-tabs{display:flex;gap:.15rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:3px}
+  .nav-tab{padding:.35rem .9rem;border:none;background:transparent;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;border-radius:5px;transition:all .15s;white-space:nowrap}
+  .nav-tab:hover{background:var(--white);color:var(--text)}
+  .nav-tab.active{background:var(--white);color:var(--primary);font-weight:600;box-shadow:var(--sh)}
+
+  /* PAGES */
+  .page{display:none;padding-top:56px;min-height:100vh}
+  .page.active{display:block}
+
+  /* HELPERS */
+  .eyebrow{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:.3rem}
+  .pg-title{font-family:'Inter',sans-serif;font-size:1.6rem;font-weight:700;letter-spacing:-.5px;margin-bottom:.3rem}
+  .pg-desc{font-size:.85rem;color:var(--text2)}
+  .sec-label{font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:.75rem}
+  .card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh)}
+  .tag{font-family:'DM Mono',monospace;font-size:.58rem;padding:2px 7px;border-radius:4px;border:1px solid}
+  .tag-blue{background:var(--primary-pale);color:var(--primary);border-color:#bfdbfe}
+  .tag-sky{background:var(--accent-pale);color:#0369a1;border-color:#bae6fd}
+  .tag-amber{background:var(--amber-pale);color:var(--amber);border-color:#fde68a}
+  .tag-red{background:var(--red-pale);color:var(--red);border-color:#fecaca}
+  .tag-gray{background:var(--bg2);color:var(--text2);border-color:var(--border)}
+  .tag-purple{background:var(--purple-pale);color:var(--purple);border-color:#ddd6fe}
+  .tags{display:flex;flex-wrap:wrap;gap:4px}
+  .badge{font-family:'DM Mono',monospace;font-size:.6rem;padding:2px 8px;border-radius:20px;font-weight:500;letter-spacing:.5px;white-space:nowrap}
+  .badge-gray{background:var(--bg2);color:var(--text2)}
+  .badge-sky{background:var(--accent-pale);color:#0369a1}
+  .badge-amber{background:var(--amber-pale);color:var(--amber)}
+  .badge-blue{background:var(--primary-pale);color:var(--primary)}
+  .badge-green{background:var(--green-pale);color:var(--green)}
+  .badge-purple{background:var(--purple-pale);color:var(--purple)}
+  .divider{height:1px;background:var(--border);margin:2rem 0}
+
+  /* ===== FLOW PAGE ===== */
+  .flow-page{max-width:1040px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+  .flow-wrap{display:flex;flex-direction:column;align-items:center}
+  .flow-step{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.3rem;width:100%;max-width:560px;box-shadow:var(--sh);transition:box-shadow .2s,border-color .2s}
+  .flow-step:hover{box-shadow:var(--sh-md);border-color:var(--border2)}
+  .flow-step-head{display:flex;align-items:center;gap:.75rem;margin-bottom:.35rem}
+  .step-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+  .ico-blue{background:var(--primary-pale)}
+  .ico-sky{background:var(--accent-pale)}
+  .ico-amber{background:var(--amber-pale)}
+  .ico-green{background:var(--green-pale)}
+  .ico-red{background:var(--red-pale)}
+  .ico-purple{background:var(--purple-pale)}
+  .step-title{font-family:'Inter',sans-serif;font-size:.86rem;font-weight:600;color:var(--text)}
+  .step-badge{margin-left:auto}
+  .step-desc{font-size:.78rem;color:var(--text2);line-height:1.6;padding-left:calc(34px + .75rem)}
+  .flow-conn{display:flex;flex-direction:column;align-items:center;padding:2px 0;gap:2px}
+  .conn-line{width:2px;height:18px;background:var(--border2)}
+  .conn-label{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--text3);background:var(--bg);border:1px solid var(--border);padding:1px 8px;border-radius:10px;letter-spacing:.5px}
+  .flow-branch{display:grid;grid-template-columns:1fr 76px 1fr;width:100%;max-width:760px;gap:.75rem;align-items:start;margin:4px 0}
+  .branch-mid{display:flex;flex-direction:column;align-items:center;padding-top:4px;gap:4px}
+  .diamond{width:52px;height:52px;background:var(--amber-pale);border:2px solid #fbbf24;border-radius:9px;transform:rotate(45deg);display:flex;align-items:center;justify-content:center}
+  .diamond-txt{transform:rotate(-45deg);font-family:'DM Mono',monospace;font-size:.48rem;color:var(--amber);text-align:center;font-weight:500;line-height:1.3}
+  .branch-lbl{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text3);text-align:center;margin-bottom:4px}
+  .flow-step.s-green{border-color:#6ee7b7}
+  .flow-step.s-red{border-color:#fca5a5}
+  .flow-step.s-amber{border-color:#fcd34d}
+  .flow-step.s-purple{border-color:#ddd6fe}
+  .outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;width:100%;max-width:760px}
+  .arch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.75rem}
+  .arch-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;box-shadow:var(--sh)}
+  .arch-card-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem}
+  .arch-ico{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+  .arch-title{font-size:.8rem;font-weight:600}
+  .arch-desc{font-size:.73rem;color:var(--text2);line-height:1.55;margin-bottom:.5rem}
+  .reniec-box{background:var(--purple-pale);border:1px solid #ddd6fe;border-radius:var(--r);padding:1.2rem 1.4rem;margin-top:2rem}
+  .reniec-title{font-size:.8rem;font-weight:700;color:var(--purple);margin-bottom:.5rem}
+  .reniec-body{font-family:'DM Mono',monospace;font-size:.7rem;color:#5b21b6;line-height:1.7}
+
+  /* ===== LOGIN PAGE ===== */
+  .login-page{min-height:calc(100vh - 56px);display:flex;align-items:center;justify-content:center;padding:2rem}
+  .login-card{background:var(--white);border:1px solid var(--border);border-radius:14px;box-shadow:var(--sh-lg);width:100%;max-width:410px;overflow:hidden}
+  .login-header{background:var(--primary);padding:1.8rem 2rem;text-align:center}
+  .login-header-ico{width:50px;height:50px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto .9rem}
+  .login-header-title{font-family:'Inter',sans-serif;font-weight:700;font-size:1.15rem;color:white;margin-bottom:.2rem}
+  .login-header-sub{font-size:.76rem;color:rgba(255,255,255,.65)}
+  .login-body{padding:1.8rem 2rem}
+  .form-group{margin-bottom:1rem}
+  .form-label{display:block;font-size:.75rem;font-weight:600;color:var(--text2);margin-bottom:.35rem}
+  .form-ctrl{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);padding:.62rem .85rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.86rem;outline:none;transition:all .15s}
+  .form-ctrl:focus{border-color:var(--accent);background:var(--white);box-shadow:0 0 0 3px rgba(14,165,233,.1)}
+  .form-ctrl::placeholder{color:var(--text3)}
+  .btn-login{width:100%;padding:.7rem;background:var(--primary);border:none;border-radius:var(--r-sm);color:white;font-family:'Inter',sans-serif;font-size:.86rem;font-weight:600;cursor:pointer;transition:all .2s;margin-top:.4rem}
+  .btn-login:hover{background:var(--primary-h);box-shadow:0 4px 12px rgba(30,58,138,.3);transform:translateY(-1px)}
+  .login-note{margin-top:1rem;background:var(--accent-pale);border:1px solid #bae6fd;border-radius:var(--r-sm);padding:.75rem 1rem;font-size:.73rem;color:#0369a1;line-height:1.6}
+
+  /* ===== MODULE PAGE ===== */
+  .module-layout{display:flex;min-height:calc(100vh - 56px)}
+  .mod-sidebar{width:210px;background:var(--white);border-right:1px solid var(--border);padding:1.1rem .85rem;display:flex;flex-direction:column;flex-shrink:0}
+  .sb-section{margin-bottom:1.1rem}
+  .sb-lbl{font-size:.63rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);padding:0 .4rem;margin-bottom:.35rem}
+  .sb-info{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);padding:.6rem .75rem}
+  .sb-info-main{font-size:.8rem;font-weight:600;color:var(--text)}
+  .sb-info-sub{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text3);margin-top:1px}
+  .sb-stat{display:flex;justify-content:space-between;align-items:center;padding:.45rem .75rem;border-radius:var(--r-sm)}
+  .sb-stat-lbl{font-size:.73rem;color:var(--text2)}
+  .sb-stat-val{font-family:'DM Mono',monospace;font-size:.86rem;font-weight:500}
+  .sb-demo{margin-top:auto;background:#fef9c3;border:1px solid #fef08a;border-radius:var(--r-sm);padding:.65rem .75rem;font-size:.68rem;color:#854d0e;line-height:1.5}
+  .mod-main{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--bg)}
+  .scan-wrap{display:flex;flex-direction:column;align-items:center;gap:1.4rem;width:100%;max-width:500px}
+  .status-bar{width:100%;background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh)}
+  .status-left{display:flex;align-items:center;gap:.5rem}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 2px rgba(5,150,105,.2);animation:blink 2s infinite}
+  .status-dot.off{background:var(--text3);box-shadow:none;animation:none}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+  .status-txt{font-size:.77rem;color:var(--text2);font-weight:500}
+  .status-txt strong{color:var(--text)}
+  .tog-wrap{display:flex;align-items:center;gap:.5rem;font-size:.73rem;color:var(--text2);font-weight:500}
+  .toggle{position:relative;width:36px;height:20px;cursor:pointer}
+  .toggle input{display:none}
+  .tog-track{position:absolute;inset:0;background:var(--border2);border-radius:10px;transition:background .2s}
+  .tog-thumb{position:absolute;width:14px;height:14px;background:white;border-radius:50%;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .toggle input:checked~.tog-track{background:var(--primary)}
+  .toggle input:checked~.tog-thumb{transform:translateX(16px)}
+  .scan-area{position:relative;display:flex;align-items:center;justify-content:center;width:220px;height:220px;cursor:pointer}
+  .scan-rings{position:absolute;inset:0}
+  .scan-ring{position:absolute;border-radius:50%;border:1px solid var(--border);animation:ring-br 3s ease-in-out infinite}
+  .scan-ring:nth-child(1){inset:0;animation-delay:0s}
+  .scan-ring:nth-child(2){inset:20px;animation-delay:.2s}
+  .scan-ring:nth-child(3){inset:40px;animation-delay:.4s}
+  @keyframes ring-br{0%,100%{opacity:.4}50%{opacity:1}}
+  .scan-pad{width:118px;height:118px;background:var(--white);border:2px solid var(--border2);border-radius:18px;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;transition:all .25s;box-shadow:var(--sh-md);overflow:hidden}
+  .scan-pad:hover{border-color:var(--accent);box-shadow:0 0 0 4px rgba(14,165,233,.12),var(--sh-md)}
+  .scan-pad.scanning{border-color:var(--accent);box-shadow:0 0 0 4px rgba(14,165,233,.15),var(--sh-md)}
+  .scan-pad.r-ok{border-color:var(--green);box-shadow:0 0 0 4px rgba(5,150,105,.15),var(--sh-md)}
+  .scan-pad.r-deny{border-color:var(--red);box-shadow:0 0 0 4px rgba(220,38,38,.15),var(--sh-md)}
+  .pad-ico{font-size:2.8rem;transition:all .2s}
+  .scan-beam{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);top:0;opacity:0}
+  .scan-pad.scanning .scan-beam{opacity:1;animation:beam 1.2s linear infinite}
+  @keyframes beam{0%{top:10%}100%{top:88%}}
+  .scan-hint{position:absolute;bottom:-26px;font-size:.7rem;color:var(--text3);white-space:nowrap}
+  .result-card{width:100%;background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;min-height:128px;position:relative;box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;transition:border-color .3s;overflow:hidden}
+  .result-card.ok{border-color:#6ee7b7}
+  .result-card.deny{border-color:#fca5a5}
+  .result-idle{text-align:center;color:var(--text3)}
+  .result-idle-ico{font-size:1.6rem;margin-bottom:.35rem;opacity:.4}
+  .result-idle-txt{font-size:.73rem;font-family:'DM Mono',monospace}
+  .scan-overlay{display:none;position:absolute;inset:0;background:rgba(255,255,255,.96);align-items:center;justify-content:center;flex-direction:column;gap:.7rem;z-index:10;border-radius:var(--r)}
+  .scan-overlay.show{display:flex}
+  .spinner{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .step-list{display:flex;flex-direction:column;gap:.3rem}
+  .step-item{font-family:'DM Mono',monospace;font-size:.67rem;color:var(--text3);display:flex;align-items:center;gap:.4rem;transition:color .2s}
+  .step-item::before{content:'○';font-size:.5rem}
+  .step-item.active{color:var(--primary);font-weight:500}
+  .step-item.active::before{content:'●';color:var(--accent)}
+  .step-item.done{color:var(--green)}
+  .step-item.done::before{content:'✓'}
+  .result-content{display:none;width:100%;gap:1.1rem;align-items:center}
+  .result-content.show{display:flex}
+  .verdict-side{display:flex;flex-direction:column;align-items:center;gap:.4rem;min-width:108px}
+  .verdict-chip{font-family:'Inter',sans-serif;font-size:.76rem;font-weight:700;letter-spacing:.5px;padding:.32rem .85rem;border-radius:6px;text-transform:uppercase}
+  .verdict-chip.ok{background:var(--green-pale);color:var(--green)}
+  .verdict-chip.deny{background:var(--red-pale);color:var(--red)}
+  .verdict-emoji{font-size:2rem}
+  .result-data{flex:1}
+  .result-name{font-family:'Inter',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-.3px;margin-bottom:.35rem}
+  .result-meta{display:flex;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap}
+  .result-meta-item{font-size:.73rem;color:var(--text2)}
+  .result-meta-item strong{color:var(--text)}
+  .result-motive{font-size:.7rem;font-family:'DM Mono',monospace;color:var(--red);background:var(--red-pale);border:1px solid #fecaca;padding:.32rem .65rem;border-radius:5px;display:none}
+  .result-motive.show{display:block}
+  .result-src{font-size:.65rem;font-family:'DM Mono',monospace;color:var(--text3);margin-top:.35rem}
+  .persons-panel{width:230px;background:var(--white);border-left:1px solid var(--border);padding:1.1rem .85rem;overflow-y:auto}
+  .persons-title{font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:.25rem}
+  .persons-sub{font-size:.72rem;color:var(--text2);margin-bottom:.9rem}
+  .person-item{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);padding:.7rem;margin-bottom:.45rem;cursor:pointer;transition:all .15s}
+  .person-item:hover,.person-item.sel{border-color:var(--primary);background:var(--primary-pale)}
+  .pi-name{font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:2px}
+  .pi-dni{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text3);margin-bottom:.35rem}
+  .pi-tags{display:flex;flex-wrap:wrap;gap:3px}
+  .ptag{font-family:'DM Mono',monospace;font-size:.57rem;padding:1px 6px;border-radius:3px;border:1px solid}
+  .ptag-ok{background:var(--green-pale);color:var(--green);border-color:#a7f3d0}
+  .ptag-minor{background:var(--amber-pale);color:var(--amber);border-color:#fde68a}
+  .ptag-banned{background:var(--red-pale);color:var(--red);border-color:#fecaca}
+  .ptag-new{background:var(--purple-pale);color:var(--purple);border-color:#ddd6fe}
+
+  /* ===== LEGAL PAGE ===== */
+  .legal-page{max-width:980px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+  .alert-box{background:var(--amber-pale);border:1px solid #fcd34d;border-left:4px solid var(--amber);border-radius:var(--r-sm);padding:.85rem 1rem;margin-bottom:1.5rem;font-size:.78rem;color:#92400e;line-height:1.6}
+  .legal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+  .legal-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;box-shadow:var(--sh)}
+  .lc-head{display:flex;align-items:flex-start;gap:.65rem;margin-bottom:.65rem}
+  .lc-ico{font-size:1.15rem;flex-shrink:0;margin-top:1px}
+  .lc-title{font-size:.83rem;font-weight:700;color:var(--text);letter-spacing:-.1px}
+  .lc-law{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--text3);margin-top:2px}
+  .lc-body{font-size:.76rem;color:var(--text2);line-height:1.65}
+  .lc-body strong{color:var(--text);font-weight:600}
+
+  /* FOOTER */
+  .footer{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);padding:.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;z-index:50;font-size:.7rem}
+  .footer-l{color:var(--text3);font-family:'DM Mono',monospace}
+  .footer-l span{color:var(--primary);font-weight:600}
+  .footer-sess{display:none;align-items:center;gap:.9rem}
+  .footer-sess.show{display:flex}
+  .footer-sess-info{color:var(--text2);display:flex;align-items:center;gap:.4rem;font-size:.7rem}
+  .footer-sess-info strong{color:var(--primary);font-weight:600}
+  .btn-logout{padding:.22rem .7rem;background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:5px;cursor:pointer;font-size:.7rem;font-family:'DM Sans',sans-serif;transition:all .15s}
+  .btn-logout:hover{border-color:var(--red);color:var(--red)}
+  .footer-nosess{color:var(--text3);font-size:.7rem}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-brand-icon">🖐️</div>
+    <div class="nav-brand-name">AccessID <span>· Control de Acceso Biométrico</span></div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="goPage('flow')">Flujo del Sistema</button>
+    <button class="nav-tab" onclick="goPage('login')">Login Guardia</button>
+    <button class="nav-tab" onclick="goPage('module')">Módulo de Acceso</button>
+    <button class="nav-tab" onclick="goPage('legal')">Marco Legal</button>
+  </div>
+</nav>
+
+<div class="footer">
+  <div class="footer-l"><span>ACCESSID</span> · Demo v1.0 · Sistema Biométrico · Perú</div>
+  <div class="footer-sess" id="fSess">
+    <div class="footer-sess-info">
+      <div class="status-dot" style="width:7px;height:7px;flex-shrink:0"></div>
+      Módulo activo — <strong id="fGuardia">—</strong> · <strong id="fSucursal">—</strong>
+    </div>
+    <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+  </div>
+  <div class="footer-nosess" id="fNoSess">Sin sesión activa — Inicia sesión para activar el módulo</div>
+</div>
+
+<!-- ===== FLOW ===== -->
+<div class="page active" id="page-flow">
+  <div class="flow-page">
+    <div style="margin-bottom:2rem">
+      <div class="eyebrow">Arquitectura del sistema</div>
+      <div class="pg-title">Flujo de funcionamiento</div>
+      <div class="pg-desc">Recorrido completo desde que el cliente llega a la puerta hasta la decisión mostrada en pantalla.</div>
+    </div>
+
+    <div class="flow-wrap">
+      <div class="flow-step">
+        <div class="flow-step-head">
+          <div class="step-ico ico-blue">🧍</div>
+          <div class="step-title">Cliente llega al módulo de acceso</div>
+          <span class="badge badge-gray step-badge">INICIO</span>
+        </div>
+        <div class="step-desc">El cliente se acerca al módulo en la puerta de la discoteca. El sistema está activo gracias a la sesión iniciada por el guardia.</div>
+      </div>
+      <div class="flow-conn"><div class="conn-line"></div></div>
+
+      <div class="flow-step">
+        <div class="flow-step-head">
+          <div class="step-ico ico-sky">🖐️</div>
+          <div class="step-title">Lector biométrico captura la huella</div>
+          <span class="badge badge-sky step-badge">HARDWARE</span>
+        </div>
+        <div class="step-desc">El dispositivo (ej. ZKTeco / Suprema) captura la huella y genera un <strong>template biométrico cifrado</strong>. Nunca se almacena la imagen real: solo el hash irreversible.</div>
+      </div>
+      <div class="flow-conn"><div class="conn-line"></div></div>
+
+      <div class="flow-step">
+        <div class="flow-step-head">
+          <div class="step-ico ico-amber">💻</div>
+          <div class="step-title">Servicio local en la PC del módulo</div>
+          <span class="badge badge-amber step-badge">LOCAL</span>
+        </div>
+        <div class="step-desc">Un microservicio ligero instalado en la PC recibe el template y lo envía a la API en nube vía HTTPS. Sin internet, consulta la <strong>caché local</strong> con personas frecuentes y sincroniza al reconectarse.</div>
+      </div>
+      <div class="flow-conn"><div class="conn-line"></div><div class="conn-label">HTTPS / TLS 1.3</div><div class="conn-line"></div></div>
+
+      <div class="flow-step">
+        <div class="flow-step-head">
+          <div class="step-ico ico-blue">☁️</div>
+          <div class="step-title">API en nube busca en base de datos</div>
+          <span class="badge badge-blue step-badge">NUBE</span>
+        </div>
+        <div class="step-desc">El servidor recibe el template cifrado y busca coincidencia en la base de datos central compartida entre las 3 sucursales.</div>
+      </div>
+      <div class="flow-conn"><div class="conn-line"></div></div>
+
+      <div class="flow-branch">
+        <div>
+          <div class="branch-lbl" style="color:var(--green)">✓ SÍ — Ya registrado</div>
+          <div class="flow-step s-green">
+            <div class="flow-step-head"><div class="step-ico ico-green">✅</div><div class="step-title">Persona encontrada en BD</div></div>
+            <div class="step-desc">Se recuperan nombre, edad, fecha de nacimiento y estado de restricción. No se consulta RENIEC.</div>
+          </div>
+        </div>
+        <div class="branch-mid">
+          <div class="conn-line" style="height:16px"></div>
+          <div class="diamond"><div class="diamond-txt">¿EN<br>BD?</div></div>
+          <div class="conn-line" style="height:16px"></div>
+        </div>
+        <div>
+          <div class="branch-lbl" style="color:var(--purple)">✗ NO — Primera vez</div>
+          <div class="flow-step s-purple">
+            <div class="flow-step-head">
+              <div class="step-ico ico-purple">🏛️</div>
+              <div class="step-title">Consulta API AFIS de RENIEC</div>
+              <span class="badge badge-purple step-badge">RENIEC</span>
+            </div>
+            <div class="step-desc">Se envía el template biométrico al servicio AFIS de RENIEC. Devuelve DNI, nombres, apellidos y fecha de nacimiento. Los datos se guardan en BD para futuras visitas.</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-conn"><div class="conn-line"></div></div>
+
+      <div class="flow-step">
+        <div class="flow-step-head">
+          <div class="step-ico ico-amber">⚙️</div>
+          <div class="step-title">Motor de decisión evalúa dos condiciones</div>
+          <span class="badge badge-amber step-badge">LÓGICA</span>
+        </div>
+        <div class="step-desc"><strong>(1) ¿Es mayor de edad?</strong> Fecha de nacimiento vs. fecha actual. <strong>(2) ¿Tiene restricción activa en esta sucursal?</strong> Gestionada por el administrador de la sucursal.</div>
+      </div>
+      <div class="flow-conn"><div class="conn-line"></div></div>
+
+      <div class="outcomes">
+        <div class="flow-step s-green">
+          <div class="flow-step-head"><div class="step-ico ico-green">🟢</div><div class="step-title">Acceso Permitido</div></div>
+          <div class="step-desc">Mayor de edad, sin restricciones. Pantalla muestra nombre, edad y <strong style="color:var(--green)">PERMITIDO</strong>.</div>
+        </div>
+        <div class="flow-step s-amber">
+          <div class="flow-step-head"><div class="step-ico ico-amber">🔞</div><div class="step-title">Denegado — Menor</div></div>
+          <div class="step-desc">Menor de edad. Pantalla muestra <strong style="color:var(--red)">DENEGADO</strong> con motivo "Menor de edad".</div>
+        </div>
+        <div class="flow-step s-red">
+          <div class="flow-step-head"><div class="step-ico ico-red">🚫</div><div class="step-title">Denegado — Restricción</div></div>
+          <div class="step-desc">Persona con acceso restringido. Muestra <strong style="color:var(--red)">DENEGADO</strong> con el motivo registrado.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reniec-box">
+      <div class="reniec-title">🏛️ Nota técnica — API AFIS de RENIEC</div>
+      <div class="reniec-body">
+        RENIEC tiene el sistema AFIS (Automated Fingerprint Identification System) que verifica identidad por huella dactilar.<br><br>
+        FLUJO: Template biométrico → POST /reniec/afis/verificar → { dni, nombres, apellidos, fecha_nacimiento }<br><br>
+        REQUISITO: Convenio Interinstitucional con RENIEC, o proveedor autorizado (ej. Verifyid.pe, Truora, IDVerify Perú).<br><br>
+        ALTERNATIVA TRANSITORIA: Mientras se tramita el convenio, el guardia ingresa el DNI manualmente en el primer registro. Esta opción queda como fallback documentado.
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="sec-label">Componentes del sistema</div>
+    <div class="arch-grid">
+      <div class="arch-card"><div class="arch-card-head"><div class="arch-ico ico-sky">🖐️</div><div class="arch-title">Lector Biométrico</div></div><div class="arch-desc">Hardware USB/TCP en cada módulo. Captura huella y genera template via SDK del fabricante.</div><div class="tags"><span class="tag tag-gray">ZKTeco</span><span class="tag tag-gray">Suprema</span></div></div>
+      <div class="arch-card"><div class="arch-card-head"><div class="arch-ico ico-blue">🌐</div><div class="arch-title">App Web (PWA)</div></div><div class="arch-desc">Aplicación web progresiva en el PC del módulo. Soporta modo offline con caché local.</div><div class="tags"><span class="tag tag-blue">React/Vue</span><span class="tag tag-blue">IndexedDB</span></div></div>
+      <div class="arch-card"><div class="arch-card-head"><div class="arch-ico ico-blue">⚡</div><div class="arch-title">API REST en Nube</div></div><div class="arch-desc">Gestiona autenticación, decisión, integración RENIEC y logs de acceso.</div><div class="tags"><span class="tag tag-blue">Node.js</span><span class="tag tag-sky">AWS/Railway</span></div></div>
+      <div class="arch-card"><div class="arch-card-head"><div class="arch-ico ico-green">🗄️</div><div class="arch-title">BD Centralizada</div></div><div class="arch-desc">Base única en nube para las 3 sucursales. Restricciones configurables por sucursal.</div><div class="tags"><span class="tag tag-blue">PostgreSQL</span><span class="tag tag-sky">Supabase</span></div></div>
+      <div class="arch-card"><div class="arch-card-head"><div class="arch-ico ico-amber">📴</div><div class="arch-title">Modo Offline</div></div><div class="arch-desc">Sin internet, opera con caché local de personas frecuentes. Sincroniza al reconectarse.</div><div class="tags"><span class="tag tag-amber">Fallback</span><span class="tag tag-gray">Service Worker</span></div></div>
+      <div class="arch-card"><div class="arch-card-head"><div class="arch-ico ico-purple">🏛️</div><div class="arch-title">API RENIEC (AFIS)</div></div><div class="arch-desc">Solo en primer registro. Requiere convenio o proveedor autorizado.</div><div class="tags"><span class="tag tag-purple">Convenio</span><span class="tag tag-red">Dato sensible</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOGIN ===== -->
+<div class="page" id="page-login">
+  <div class="login-page">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-header-ico">🛡️</div>
+        <div class="login-header-title">AccessID — Módulo Guardia</div>
+        <div class="login-header-sub">Inicia sesión para activar el lector biométrico</div>
+      </div>
+      <div class="login-body">
+        <div class="form-group">
+          <label class="form-label">Sucursal</label>
+          <select class="form-ctrl" id="loginSuc">
+            <option value="">Seleccionar sucursal...</option>
+            <option>Sucursal Centro — Lima</option>
+            <option>Sucursal Miraflores — Lima</option>
+            <option>Sucursal San Isidro — Lima</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Usuario</label>
+          <input type="text" class="form-ctrl" id="loginUsr" placeholder="ID de guardia..." autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <input type="password" class="form-ctrl" id="loginPwd" placeholder="••••••••">
+        </div>
+        <button class="btn-login" onclick="doLogin()">Activar módulo de acceso</button>
+        <div class="login-note">ℹ️ <strong>Demo:</strong> ingresa cualquier usuario y contraseña. El login activa o desactiva el proceso de lectura biométrica. Sin sesión activa, el lector no procesa ingresos.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODULE ===== -->
+<div class="page" id="page-module">
+  <div class="module-layout">
+    <div class="mod-sidebar">
+      <div class="sb-section">
+        <div class="sb-lbl">Sucursal activa</div>
+        <div class="sb-info"><div class="sb-info-main" id="sbSuc">—</div><div class="sb-info-sub">EN LÍNEA</div></div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-lbl">Guardia en turno</div>
+        <div class="sb-info"><div class="sb-info-main" id="sbGua">—</div><div class="sb-info-sub">ROL: ACCESO</div></div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-lbl">Estado del módulo</div>
+        <div class="sb-info"><div class="sb-info-main" id="sbEst" style="color:var(--green)">🟢 Activo</div><div class="sb-info-sub" id="sbEstSub">LECTOR EN ESPERA</div></div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-lbl">Estadísticas hoy</div>
+        <div class="sb-stat"><span class="sb-stat-lbl">Permitidos</span><span class="sb-stat-val" id="cntOk" style="color:var(--green)">0</span></div>
+        <div class="sb-stat"><span class="sb-stat-lbl">Denegados</span><span class="sb-stat-val" id="cntDeny" style="color:var(--red)">0</span></div>
+      </div>
+      <div class="sb-demo">💡 <strong>Demo:</strong> selecciona una persona del panel derecho para simular el escaneo de huella.</div>
+    </div>
+
+    <div class="mod-main">
+      <div class="scan-wrap">
+        <div class="status-bar">
+          <div class="status-left">
+            <div class="status-dot" id="sDot"></div>
+            <div class="status-txt">Lector conectado · <strong>Módulo activo</strong></div>
+          </div>
+          <div class="tog-wrap">
+            <span id="togLbl">Activo</span>
+            <label class="toggle">
+              <input type="checkbox" id="modToggle" checked onchange="toggleMod(this)">
+              <div class="tog-track"></div>
+              <div class="tog-thumb"></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="scan-area" onclick="simulateScan()">
+          <div class="scan-rings">
+            <div class="scan-ring"></div>
+            <div class="scan-ring"></div>
+            <div class="scan-ring"></div>
+          </div>
+          <div class="scan-pad" id="scanPad">
+            <div class="scan-beam"></div>
+            <span class="pad-ico">🖐️</span>
+          </div>
+          <div class="scan-hint">Toca para simular lectura de huella</div>
+        </div>
+
+        <div class="result-card" id="resCard">
+          <div class="scan-overlay" id="scanOverlay">
+            <div class="spinner"></div>
+            <div class="step-list">
+              <div class="step-item" id="st1">Capturando template biométrico...</div>
+              <div class="step-item" id="st2">Buscando en base de datos...</div>
+              <div class="step-item" id="st3">Evaluando restricciones...</div>
+              <div class="step-item" id="st4">Generando respuesta...</div>
+            </div>
+          </div>
+          <div class="result-idle" id="resIdle">
+            <div class="result-idle-ico">🖐️</div>
+            <div class="result-idle-txt">Esperando lectura biométrica...</div>
+          </div>
+          <div class="result-content" id="resCont">
+            <div class="verdict-side">
+              <div class="verdict-emoji" id="vEmoji">✅</div>
+              <div class="verdict-chip ok" id="vChip">PERMITIDO</div>
+            </div>
+            <div class="result-data">
+              <div class="result-name" id="rName">—</div>
+              <div class="result-meta">
+                <div class="result-meta-item">Edad: <strong id="rAge">—</strong> años</div>
+                <div class="result-meta-item">Mayor de edad: <strong id="rMaj">—</strong></div>
+              </div>
+              <div class="result-motive" id="rMot">—</div>
+              <div class="result-src" id="rSrc">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="persons-panel">
+      <div class="persons-title">Personas de prueba</div>
+      <div class="persons-sub">Simula quién coloca el dedo en el lector</div>
+      <div class="person-item" onclick="selPerson(0)" id="pi0">
+        <div class="pi-name">Carlos Mendoza Ramos</div>
+        <div class="pi-dni">DNI: 45678901 · 28 años</div>
+        <div class="pi-tags"><span class="ptag ptag-ok">Mayor</span><span class="ptag ptag-ok">Sin restricción</span></div>
+      </div>
+      <div class="person-item" onclick="selPerson(1)" id="pi1">
+        <div class="pi-name">Lucía Torres Vega</div>
+        <div class="pi-dni">DNI: 76543210 · 17 años</div>
+        <div class="pi-tags"><span class="ptag ptag-minor">Menor de edad</span></div>
+      </div>
+      <div class="person-item" onclick="selPerson(2)" id="pi2">
+        <div class="pi-name">Roberto Silva Morales</div>
+        <div class="pi-dni">DNI: 34567890 · 32 años</div>
+        <div class="pi-tags"><span class="ptag ptag-banned">Restringido</span></div>
+      </div>
+      <div class="person-item" onclick="selPerson(3)" id="pi3">
+        <div class="pi-name">Ana García Paredes</div>
+        <div class="pi-dni">DNI: 98765432 · 25 años</div>
+        <div class="pi-tags"><span class="ptag ptag-ok">Mayor</span><span class="ptag ptag-ok">Sin restricción</span></div>
+      </div>
+      <div class="person-item" onclick="selPerson(4)" id="pi4">
+        <div class="pi-name">Juan Quispe Llanos</div>
+        <div class="pi-dni">DNI: 11223344 · 22 años</div>
+        <div class="pi-tags"><span class="ptag ptag-new">Primera vez</span><span class="ptag ptag-new">Vía RENIEC</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LEGAL ===== -->
+<div class="page" id="page-legal">
+  <div class="legal-page">
+    <div style="margin-bottom:1.5rem">
+      <div class="eyebrow">Cumplimiento normativo</div>
+      <div class="pg-title">Marco Legal · Perú</div>
+      <div class="pg-desc">Obligaciones bajo la Ley N° 29733 — Ley de Protección de Datos Personales y su reglamento DS 003-2013-JUS.</div>
+    </div>
+    <div class="alert-box">⚠️ <strong>Punto crítico:</strong> Las huellas dactilares son datos biométricos clasificados como <strong>DATOS SENSIBLES</strong> en la legislación peruana. Su tratamiento exige consentimiento expreso y medidas de seguridad reforzadas. El ente regulador es la <strong>ANPD</strong> — Autoridad Nacional de Protección de Datos Personales.</div>
+    <div class="legal-grid">
+      <div class="legal-card"><div class="lc-head"><div class="lc-ico">📋</div><div><div class="lc-title">Registro ante la ANPD</div><div class="lc-law">Ley 29733 · Art. 29</div></div></div><div class="lc-body">Toda base de datos personales mantenida por una empresa privada debe registrarse ante la ANPD antes de operar. Debes registrar: base de datos de clientes (con huellas), log de accesos y lista de restricciones.</div></div>
+      <div class="legal-card"><div class="lc-head"><div class="lc-ico">✍️</div><div><div class="lc-title">Consentimiento Expreso</div><div class="lc-law">Ley 29733 · Art. 13</div></div></div><div class="lc-body">Al registrar la huella por primera vez, el cliente debe otorgar <strong>consentimiento expreso, previo e informado</strong>. En la práctica: cartel visible en la entrada y pantalla de consentimiento antes de la primera lectura. No se puede usar la huella para otra finalidad.</div></div>
+      <div class="legal-card"><div class="lc-head"><div class="lc-ico">🔒</div><div><div class="lc-title">Seguridad de los Datos</div><div class="lc-law">DS 003-2013-JUS · Art. 39</div></div></div><div class="lc-body"><strong>Nunca almacenes la imagen de la huella.</strong> Solo el template (hash irreversible). BD en nube con cifrado en tránsito (TLS 1.3) y en reposo (AES-256). El guardia solo accede a la respuesta de la API, no a la BD.</div></div>
+      <div class="legal-card"><div class="lc-head"><div class="lc-ico">⏱️</div><div><div class="lc-title">Retención de Datos</div><div class="lc-law">Ley 29733 · Art. 11</div></div></div><div class="lc-body">No puedes conservar datos indefinidamente. <strong>Recomendado:</strong> cliente activo + 1 año adicional, luego anonimizar o eliminar el template. Los logs de acceso pueden conservarse 2 años para auditoría.</div></div>
+      <div class="legal-card"><div class="lc-head"><div class="lc-ico">👤</div><div><div class="lc-title">Derechos ARCO</div><div class="lc-law">Ley 29733 · Art. 19–22</div></div></div><div class="lc-body">Cualquier persona puede ejercer: <strong>A</strong>cceso · <strong>R</strong>ectificación · <strong>C</strong>ancelación · <strong>O</strong>posición.<br><br>Debes tener un canal (email o formulario) para atender estas solicitudes en máximo <strong>20 días hábiles</strong>.</div></div>
+      <div class="legal-card"><div class="lc-head"><div class="lc-ico">🏛️</div><div><div class="lc-title">API RENIEC — Uso Legal</div><div class="lc-law">Ley 26497 · RENIEC</div></div></div><div class="lc-body">El acceso a datos biométricos vía AFIS requiere un <strong>Convenio Interinstitucional con RENIEC</strong> o proveedor autorizado. Los datos solo pueden usarse para la finalidad declarada: verificación de identidad/edad.</div></div>
+      <div class="legal-card"><div class="lc-head"><div class="lc-ico">🚫</div><div><div class="lc-title">Lista de Restricciones</div><div class="lc-law">Ley 29733 · Art. 11</div></div></div><div class="lc-body">Es legítima si: el motivo está documentado, la persona puede conocerlo e impugnarlo, y no se comparte con externos a tu empresa. Dentro de tus 3 sucursales (mismo titular) sí puedes compartirla.</div></div>
+      <div class="legal-card"><div class="lc-head"><div class="lc-ico">📄</div><div><div class="lc-title">Documentos Obligatorios</div><div class="lc-law">Antes de operar</div></div></div><div class="lc-body">— <strong>Política de Privacidad</strong> (visible en entrada)<br>— <strong>Aviso de consentimiento</strong> en el módulo<br>— <strong>Registro ante ANPD</strong><br>— <strong>Convenio con RENIEC</strong> o proveedor<br>— <strong>Política de seguridad interna</strong><br>— <strong>Política de retención y eliminación</strong></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let loggedIn=false,guardia='',sucursal='',modActive=true,selP=null,scanning=false,ok=0,deny=0;
+const persons=[
+  {name:'Carlos Mendoza Ramos',age:28,status:'ok',motive:null,src:'BD local'},
+  {name:'Lucía Torres Vega',age:17,status:'minor',motive:'Menor de edad',src:'BD local'},
+  {name:'Roberto Silva Morales',age:32,status:'banned',motive:'Restricción por incidente 14/01/2025',src:'BD local'},
+  {name:'Ana García Paredes',age:25,status:'ok',motive:null,src:'BD local'},
+  {name:'Juan Quispe Llanos',age:22,status:'ok',motive:null,src:'API RENIEC (primer registro)'}
+];
+
+function goPage(id){
+  if(id==='module'&&!loggedIn){goPage('login');return}
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const m=['flow','login','module','legal'];
+  const i=m.indexOf(id);
+  if(i>=0)document.querySelectorAll('.nav-tab')[i].classList.add('active');
+}
+
+function doLogin(){
+  const s=document.getElementById('loginSuc').value;
+  const u=document.getElementById('loginUsr').value.trim();
+  const p=document.getElementById('loginPwd').value;
+  if(!s){alert('Selecciona una sucursal');return}
+  if(!u){alert('Ingresa tu usuario');return}
+  if(!p){alert('Ingresa tu contraseña');return}
+  loggedIn=true;guardia=u.toUpperCase();sucursal=s;
+  document.getElementById('sbSuc').textContent=s;
+  document.getElementById('sbGua').textContent=guardia;
+  document.getElementById('fGuardia').textContent=guardia;
+  document.getElementById('fSucursal').textContent=s;
+  document.getElementById('fSess').classList.add('show');
+  document.getElementById('fNoSess').style.display='none';
+  goPage('module');
+}
+
+function logout(){
+  loggedIn=false;
+  document.getElementById('fSess').classList.remove('show');
+  document.getElementById('fNoSess').style.display='block';
+  goPage('login');
+}
+
+function toggleMod(el){
+  modActive=el.checked;
+  const dot=document.getElementById('sDot');
+  const lbl=document.getElementById('togLbl');
+  const est=document.getElementById('sbEst');
+  const sub=document.getElementById('sbEstSub');
+  if(modActive){dot.classList.remove('off');lbl.textContent='Activo';est.textContent='🟢 Activo';est.style.color='var(--green)';sub.textContent='LECTOR EN ESPERA'}
+  else{dot.classList.add('off');lbl.textContent='Inactivo';est.textContent='🔴 Inactivo';est.style.color='var(--red)';sub.textContent='MÓDULO DETENIDO'}
+}
+
+function selPerson(i){
+  selP=persons[i];
+  document.querySelectorAll('.person-item').forEach((el,j)=>el.classList.toggle('sel',j===i));
+  simulateScan();
+}
+
+function simulateScan(){
+  if(scanning||!modActive)return;
+  if(!selP)selP=persons[Math.floor(Math.random()*persons.length)];
+  scanning=true;
+  const pad=document.getElementById('scanPad');
+  const ov=document.getElementById('scanOverlay');
+  const idle=document.getElementById('resIdle');
+  const cont=document.getElementById('resCont');
+  const card=document.getElementById('resCard');
+  const sts=['st1','st2','st3','st4'];
+  const isNew=selP.src.includes('RENIEC');
+
+  pad.className='scan-pad scanning';
+  cont.classList.remove('show');
+  idle.style.display='none';
+  card.className='result-card';
+  ov.classList.add('show');
+  sts.forEach(s=>document.getElementById(s).className='step-item');
+  document.getElementById('st2').textContent=isNew?'No encontrado · Consultando RENIEC AFIS...':'Buscando en base de datos...';
+
+  let d=0;
+  sts.forEach((s,i)=>{
+    const extra=i===1&&isNew?650:0;
+    setTimeout(()=>document.getElementById(s).className='step-item active',d+=(400+extra));
+    setTimeout(()=>{
+      document.getElementById(s).className='step-item done';
+      if(s==='st2'&&isNew)document.getElementById('st2').textContent='RENIEC respondió · Guardando en BD...';
+    },d+=320);
+  });
+  const p=selP;
+  setTimeout(()=>{ov.classList.remove('show');showRes(p,pad,idle,cont,card);scanning=false;selP=null},d+200);
+}
+
+function showRes(p,pad,idle,cont,card){
+  const isOk=p.status==='ok';
+  document.getElementById('rName').textContent=p.name;
+  document.getElementById('rAge').textContent=p.age;
+  document.getElementById('rMaj').textContent=p.age>=18?'Sí ✅':'No ❌';
+  document.getElementById('rSrc').textContent='Fuente: '+p.src;
+  const chip=document.getElementById('vChip');
+  const emoji=document.getElementById('vEmoji');
+  const mot=document.getElementById('rMot');
+  if(isOk){
+    chip.textContent='PERMITIDO';chip.className='verdict-chip ok';emoji.textContent='✅';
+    card.classList.add('ok');pad.className='scan-pad r-ok';mot.classList.remove('show');
+    ok++;document.getElementById('cntOk').textContent=ok;
+  }else{
+    chip.textContent='DENEGADO';chip.className='verdict-chip deny';emoji.textContent='🚫';
+    card.classList.add('deny');pad.className='scan-pad r-deny';
+    mot.textContent='Motivo: '+p.motive;mot.classList.add('show');
+    deny++;document.getElementById('cntDeny').textContent=deny;
+  }
+  idle.style.display='none';cont.classList.add('show');
+  setTimeout(()=>{
+    card.className='result-card';pad.className='scan-pad';
+    cont.classList.remove('show');mot.classList.remove('show');
+    idle.style.display='block';
+    document.querySelectorAll('.person-item').forEach(el=>el.classList.remove('sel'));
+  },4500);
+}
+</script>
+</body>
+</html>
