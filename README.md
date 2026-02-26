@@ -1,44 +1,51 @@
-# CV Web Profesional - AQUINO Luis
+# CV Web — AQUINO Luis
 
 Portafolio web profesional y currículum interactivo desarrollado con HTML5, CSS3 y JavaScript Vanilla.
 
-## 🎯 Características
+## Ver CV en línea
 
-- ✅ **Diseño completamente responsive** (Mobile First)
-- ✅ **Modo claro/oscuro** con persistencia en localStorage
-- ✅ **Internacionalización** (Español/Inglés)
-- ✅ **Generación de PDF** desde la versión web
-- ✅ **Navegación suave** entre secciones
-- ✅ **Formulario de contacto** con validación
-- ✅ **Animaciones sutiles** y optimizadas
-- ✅ **Accesibilidad** (ARIA, contraste, navegación por teclado)
-- ✅ **Despliegue automático** en GitHub Pages
+**https://luchitoae.github.io/CV.github.io-/**
 
-## 🚀 Tecnologías Utilizadas
+CV descargable en PDF (una hoja):
+- Español: `cv-es.html`
+- English: `cv-en.html`
 
-- **HTML5** - Estructura semántica
-- **CSS3** - Variables CSS, Grid, Flexbox, Animaciones
-- **JavaScript Vanilla** - ES6+ Modules
-- **Font Awesome** - Íconos
-- **Google Fonts** - Tipografía (Inter, Fira Code)
+## Características
 
-## 📁 Estructura del Proyecto
+- Diseño responsive (Mobile First)
+- Modo claro/oscuro con persistencia
+- Internacionalización ES/EN
+- CV de una hoja descargable como PDF (ES/EN)
+- Demos interactivas por proyecto
+- Despliegue automático en GitHub Pages
 
-cv-web/
-├── index.html # Página principal  
-├── styles/  
-│ ├── main.css # Estilos principales  
-│ ├── theme.css # Variables claro/oscuro  
-│ ├── responsive.css # Media queries  
-│ └── print.css # Estilos para PDF  
-├── js/  
-│ ├── config.js # Configuración global  
-│ ├── i18n.js # Internacionalización  
-│ ├── theme.js # Gestión de tema  
-│ └── main.js # Lógica principal  
-├── assets/  
-│ ├── translations/  
-│ │ ├── es.json # Textos en español  
-│ │ └── en.json # Textos en inglés  
-│ └── images/ # Imágenes y recursos  
-└── README.md # Documentación  
+## Tecnologías
+
+HTML5 · CSS3 · JavaScript ES6+ Modules · Font Awesome · Google Fonts
+
+## Estructura
+
+```
+├── index.html              # CV principal
+├── cv-es.html              # CV una hoja — Español (PDF)
+├── cv-en.html              # CV una hoja — English (PDF)
+├── styles/
+│   ├── main.css
+│   ├── theme.css
+│   ├── responsive.css
+│   └── print.css
+├── js/
+│   ├── config.js
+│   ├── i18n.js
+│   ├── theme.js
+│   └── main.js
+├── assets/
+│   ├── translations/
+│   │   ├── es.json
+│   │   └── en.json
+│   └── images/
+└── demos/
+    ├── demo_proyecto-alquiler-disfraces/
+    ├── demo_frutas-mayorista/
+    └── demo_lector_huella_disco/
+```
